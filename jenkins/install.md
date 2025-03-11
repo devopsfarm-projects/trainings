@@ -1,4 +1,13 @@
-## How to install jenkins
-docker compose up -d -f install/docker-compose.yaml
+## 
+We will be installing jenkins in docker and also add docker agents
 
-Access http://localhost:8080
+## How to install jenkins
+```
+cd install
+mkdir -p volumes/jenkins_home
+docker compose up -d 
+```
+
+Access jenkins at http://localhost:8080
+
+by defaul tt

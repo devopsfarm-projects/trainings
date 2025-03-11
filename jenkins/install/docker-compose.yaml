@@ -10,35 +10,14 @@ services:
       - "8080:8080"
       - "50000:50000"
     volumes:
-      - jenkins_home:/var/jenkins_home
+      - ./volumes/jenkins_home:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
       - /usr/bin/docker:/usr/bin/docker
     environment:
       - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
+      - JENKINS_INSTALL_PLUGINS=docker-plugin
     networks:
       - jenkins_network
-
-  vault:
-    image: hashicorp/vault:latest
-    container_name: vault
-    restart: unless-stopped
-    cap_add:
-      - IPC_LOCK
-    ports:
-      - "8200:8200"
-    environment:
-      VAULT_DEV_ROOT_TOKEN_ID: "root"
-      VAULT_DEV_LISTEN_ADDRESS: "0.0.0.0:8200"
-    volumes:
-      - ./vault_data:/vault/data
-      - ./vault_data/vault-config.hcl:/vault/config/vault-config.hcl
-    networks:
-      - jenkins_network
-    entrypoint: vault server -dev -dev-root-token-id=root -config=/vault/config/vault-config.hcl #&&  sleep 50 && vault policy write jenkins /vault/policies/jenkins.hcl && wait
-
-volumes:
-  jenkins_home:
-  vault_data:
 
 networks:
   jenkins_network:
