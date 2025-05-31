@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: nginx-config-all
+  labels: 
+   app: pod-nginx-config
+spec:
+  containers:
+    - name: nginx-container
+      image: nginx
+      envFrom:
+        - configMapRef:
+            name: my-config
+      ports:
+        - name: container-port
+          protocol: TCP
+          containerPort: 80
