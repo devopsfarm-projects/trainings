@@ -10,6 +10,7 @@ spec:
   selector:
     matchLabels:
       enviroment: production
+      release: v1.1
   template:
     metadata:
       name: nginx-demo
@@ -34,7 +35,7 @@ spec:
               cpu: "200m"
               memory: "200Mi"
         - name: serve-container
-          image: nginx
+          image: nginx:1.2
           ports:
             - containerPort: 80
           volumeMounts:
