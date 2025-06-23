@@ -145,3 +145,10 @@ Custom exporters allow you to expose application-specific metrics to Prometheus.
 
 Grafana Cloud simplifies monitoring by providing a unified platform for metrics, logs, and traces. You can monitor standard system metrics and also create custom Prometheus exporters to track application-specific data. Follow the steps above to get started and ensure your systems are observable and reliable.
 
+
+
+
+
+## Prometheus server
+collects metrics
+expost metrics at /metrics or user defined path.
