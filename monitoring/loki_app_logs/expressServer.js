@@ -13,7 +13,7 @@ const logger = winston.createLogger({
             labels: { app: 'expressServer' },
             json: true,
             basicAuth: {
-                username: '693051',
+                username: '',
                 password: ''
             },
             replaceTimestamp: true,
