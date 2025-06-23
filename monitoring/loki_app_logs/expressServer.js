@@ -14,7 +14,7 @@ const logger = winston.createLogger({
             json: true,
             basicAuth: {
                 username: '693051',
-                password: 'token'
+                password: ''
             },
             replaceTimestamp: true,
             onConnectionError: (err) => console.error(err),
