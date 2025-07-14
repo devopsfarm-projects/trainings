@@ -1,5 +1,5 @@
 # DevOps Training Static Site
-
+> ⚠️ **Work In Progress:** This site is actively being developed. Features and content may change frequently.
 This static site lets you browse and view all Markdown content from your DevOps training workspace, and includes a whiteboard tool for diagrams and flowcharts.
 
 ## Getting Started
