@@ -1,0 +1,19 @@
+
+
+-- Excerise
+	Merge conflicts resolution
+		1. For last clone repo, cd to the git repo.
+		2. Checkout main branch and Pull changes from remote branch. Create a new branch "v1"
+		3. Add line "email address=v1@gmail.com" in the README.md file and commit the changes.
+		4. Checkout the main branch again. Create a new branch "v2"
+		5. Add line "email address=v2@gmail.com" in README.md file and commit the changes.
+		6. Merge the v1 and v2 branch.(hint. git merge v1)
+		7. Resolve the merge conficts. After resolving the merge conflicts. add the file and commit changes.
+	Tags
+		1. Checkout main branch.
+		2. Update README.md file with text "#v1 version", commit the file. push the chagnes
+		3. Create a lightweight tag with name v1 (git tag v1). Push the  tag
+		4. Update README.md file with text "#V2 release". commit the file and push the changes.
+		5. Create an annoted tag with name v2 (git tag -a v2), add message "v2 tag" . Push the tag
+		 
+	
