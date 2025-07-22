@@ -1,280 +1,124 @@
-
-Linux for DevOps – Day 4 Student Handout (Detailed)
-
+# DevOpsFarm IT Solutions
+## Linux for DevOps – Day 4 Student Handout (Detailed)
 
 ---
 
-Topics Covered:
-
-1. Users and Groups Management
-
-
-2. Process Management
-
-
-3. Service Management (Systemd Basics)
-
-
+### Topics Covered:
+1. Users and Groups Management  
+2. Process Management  
+3. Service Management (Systemd Basics)  
 4. Disk Usage & Monitoring (Optional)
 
-
-
-
 ---
 
-1. USERS & GROUPS MANAGEMENT
+## 1. USERS & GROUPS MANAGEMENT
 
-whoami
+**whoami**  
+> Shows the current logged-in user.  
+`whoami`
 
-> Shows the current logged-in user.
-Example:
+**id**  
+> Displays UID, GID, and groups of the current user.  
+`id`
 
+**groups**  
+> Lists all groups the user is part of.  
+`groups`
 
+**useradd <username>**  
+> Adds a new user to the system.  
+`sudo useradd devuser`
 
-whoami
+**groupadd <groupname>**  
+> Creates a new group.  
+`sudo groupadd devgroup`
 
-id
+**usermod -aG <group> <user>**  
+> Adds a user to a group (append mode).  
+`sudo usermod -aG devgroup devuser`
 
-> Displays UID, GID, and groups of the current user.
+**passwd <username>**  
+> Sets or changes the password for a user.  
+`sudo passwd devuser`
 
+**su - <username>**  
+> Switches to another user.  
+`su - devuser`
 
-
-id
-
-groups
-
-> Lists all groups the user is part of.
-
-
-
-groups
-
-useradd <username>
-
-> Adds a new user to the system.
-
-
-
-sudo useradd devuser
-
-groupadd <groupname>
-
-> Creates a new group.
-
-
-
-sudo groupadd devgroup
-
-usermod -aG <group> <user>
-
-> Adds a user to a group (append mode).
-
-
-
-sudo usermod -aG devgroup devuser
-
-passwd <username>
-
-> Sets or changes the password for a user.
-
-
-
-sudo passwd devuser
-
-su - <username>
-
-> Switches to another user.
-
-
-
-su - devuser
-
-sudo -i
-
+**sudo -i**  
 > Starts a root shell using sudo.
 
-
-
-/etc/passwd
-
-> File that stores user account information.
-
-
-
-/etc/group
-
-> File that stores group info.
-
-
-
+**/etc/passwd** - File that stores user account information.  
+**/etc/group** - File that stores group info.
 
 ---
 
-2. PROCESS MANAGEMENT
+## 2. PROCESS MANAGEMENT
 
-ps aux
+**ps aux** - Displays all running processes with detailed info.  
+`ps aux`
 
-> Displays all running processes with detailed info.
+**ps -ef** - Alternate format for viewing processes.  
+`ps -ef`
 
+**top** - Live updating view of system processes.
 
+**htop** - Enhanced version of top (may need to install it).  
+`htop`
 
-ps aux
+**sleep 1000 &** - Runs a process in the background.
 
-ps -ef
+**jobs** - Shows background jobs.
 
-> Alternate format for viewing processes.
+**fg %1** - Brings job 1 to the foreground.
 
+**kill <PID>** - Terminates a process by its PID.  
+`kill 1234`
 
+**killall <name>** - Terminates all processes by name.  
+`killall sleep`
 
-ps -ef
+**nice -n <value> <command>** - Starts a command with a specific priority.  
+`nice -n 10 sleep 1000`
 
-top
-
-> Live updating view of system processes. Press q to quit.
-
-
-
-htop
-
-> Enhanced version of top (may need to install it).
-
-
-
-htop
-
-sleep 1000 &
-
-> Runs a process in the background.
-
-
-
-jobs
-
-> Shows background jobs.
-
-
-
-fg %1
-
-> Brings job 1 to the foreground.
-
-
-
-kill <PID>
-
-> Terminates a process by its PID.
-
-
-
-kill 1234
-
-killall <name>
-
-> Terminates all processes by name.
-
-
-
-killall sleep
-
-nice -n <value> <command>
-
-> Starts a command with a specific priority (lower = higher priority).
-
-
-
-nice -n 10 sleep 1000
-
-renice -n <value> <PID>
-
-> Changes priority of a running process.
-
-
-
-renice -n 5 1234
-
+**renice -n <value> <PID>** - Changes priority of a running process.  
+`renice -n 5 1234`
 
 ---
 
-3. SERVICE MANAGEMENT (SYSTEMD)
+## 3. SERVICE MANAGEMENT (SYSTEMD)
 
-systemctl status <service>
+**systemctl status <service>** - Checks the status of a service.  
+`systemctl status ssh`
 
-> Checks the status of a service.
+**systemctl start/stop/restart <service>** - Starts, stops, or restarts a service.
 
+**systemctl enable/disable <service>** - Enables or disables a service on boot.
 
-
-systemctl status ssh
-
-systemctl start/stop/restart <service>
-
-> Starts, stops, or restarts a service.
-
-
-
-systemctl enable/disable <service>
-
-> Enables or disables a service to start on boot.
-
-
-
-journalctl -u <service>
-
-> Views logs related to a service.
-
-
-
-journalctl -u ssh
-
+**journalctl -u <service>** - Views logs related to a service.  
+`journalctl -u ssh`
 
 ---
 
-4. DISK & MEMORY MONITORING
+## 4. DISK & MEMORY MONITORING
 
-df -h
+**df -h** - Shows disk usage in human-readable format.  
+`df -h`
 
-> Shows disk usage of all mounted filesystems in human-readable format.
+**du -sh *** - Shows size of each item in current directory.  
+`du -sh *`
 
+**free -m** - Displays memory usage in megabytes.  
+`free -m`
 
-
-df -h
-
-**du -sh ***
-
-> Shows size of each file/folder in the current directory.
-
-
-
-du -sh *
-
-free -m
-
-> Displays memory usage in megabytes.
-
-
-
-free -m
-
-uptime
-
-> Shows how long the system has been running, and system load average.
-
-
-
-uptime
-
+**uptime** - Shows system uptime and load average.  
+`uptime`
 
 ---
 
-✅ Assignment
+## ✅ Assignment
 
-1. Create a new user and assign it to a group.
-
-
-2. Run a background process (like sleep), monitor and kill it.
-
-
-3. Restart a service and check its status and logs.
-
-
-4. Use df, du, and free to analyze disk and memory usage.
-
+1. Create a new user and assign it to a group.  
+2. Run a background process (like sleep), monitor and kill it.  
+3. Restart a service and check its status and logs.  
+4. Use `df`, `du`, and `free` to analyze disk and memory usage.
