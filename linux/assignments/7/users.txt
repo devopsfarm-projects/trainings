@@ -1,0 +1,5 @@
+omprakash:x:1001:1001:Om Prakash:/home/omprakash:/bin/bash
+rahul:x:1002:1002:Rahul Sharma:/home/rahul:/bin/zsh
+anita:x:1003:1003:Anita Mehra:/home/anita:/bin/bash
+admin:x:0:0:System Administrator:/root:/bin/bash
+guest:x:1004:1004:Guest User:/home/guest:/bin/false
