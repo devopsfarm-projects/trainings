@@ -7,7 +7,7 @@ Welcome to your first real-world assignment. In this 2-hour hands-on session, yo
 
 ## 🗂 Part 1: Log Analysis (30 minutes)
 
-📝 **File:** `nginx-access.log`
+[Download Log File](webserver.log)
 
 ```bash
 10.1.1.1 - - [29/Jul/2025:10:20:15 +0000] "GET /index.html HTTP/1.1" 200 1024
@@ -80,7 +80,7 @@ PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
 
 ## 📈 Part 4: Monitoring Data Aggregation (30 minutes)
 
-📝 **File:** `metrics.txt`
+[Download CPU Data](cpu_usage.csv)
 
 ```
 timestamp=2025-07-29T10:00:00 cpu=45 memory=2012MB
