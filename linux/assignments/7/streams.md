@@ -9,13 +9,6 @@ Welcome to your first real-world assignment. In this 2-hour hands-on session, yo
 
 [Download Log File](webserver.log)
 
-```bash
-10.1.1.1 - - [29/Jul/2025:10:20:15 +0000] "GET /index.html HTTP/1.1" 200 1024
-10.1.1.2 - - [29/Jul/2025:10:21:15 +0000] "GET /favicon.ico HTTP/1.1" 404 512
-10.1.1.3 - - [29/Jul/2025:10:22:15 +0000] "POST /api/login HTTP/1.1" 200 2048
-10.1.1.1 - - [29/Jul/2025:10:23:15 +0000] "GET /dashboard HTTP/1.1" 500 128
-```
-
 🔧 **Tasks:**
 
 1. Extract status codes (e.g., `200`, `404`) using `awk` or `cut`.
