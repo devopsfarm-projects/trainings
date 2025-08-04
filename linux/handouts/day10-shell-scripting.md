@@ -164,3 +164,7 @@ done
 3. **Uptime Summary Script**: Generate a report of system uptime across 3 machines via SSH loop
 4. **Monitor Public Website**: Script that pings or curl-checks a public endpoint, retries 3x before alert
 5. **Dynamic User Creation**: Create users from CSV file with random passwords and assign to groups
+
+
+### Reference
+https://www.shellscript.sh/
