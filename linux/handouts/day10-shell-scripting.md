@@ -1,126 +1,166 @@
+## 🧑‍🏫 Shell Scripting for DevOps & SRE — Day 2
+---
+
 ### 🎯 Objectives
 
-* Handle arguments, arrays, functions
-* Introduce monitoring, log parsing, backup scripts
-* Schedule scripts using `cron`
+* Handle arguments, arrays, and functions in advanced ways
+* Automate tasks like monitoring, backup, log parsing, service restarts
+* Introduce alerting and cron-based operations with logging
+* Implement retries, error handling, and reporting
 
 ---
 
-### ⏱️ **Session Duration**: 2.5 hours
+### ⏱️ **Session Duration**: 2.5–3 hours
 
 ---
 
-### 🧮 **1. Command-line Arguments (15 mins)**
+### 🧮 **1. Enhanced Arguments Demo (15 mins)**
 
 ```bash
 #!/bin/bash
-echo "Target file: $1"
-wc -l $1
+if [ $# -lt 2 ]; then
+  echo "Usage: $0 <filename> <pattern>"
+  exit 1
+fi
+
+file=$1
+pattern=$2
+
+echo "Searching for '$pattern' in $file"
+grep "$pattern" "$file"
 ```
 
-💡 **Use Case**: Used in automation jobs that take filename or path as arguments, e.g., processing logs.
+💡 **Use Case**: Parse logs dynamically for incidents
 
 ---
 
-### 🔁 **2. Real DevOps Script: Check Disk Usage (20 mins)**
+### 🔁 **2. Advanced Disk Usage Monitor with Alert (30 mins)**
 
 ```bash
 #!/bin/bash
 threshold=80
-usage=$(df / | grep / | awk '{ print $5 }' | sed 's/%//g')
+mail_recipient="sre-team@example.com"
+log="/var/log/disk_check.log"
+date >> $log
 
-if [ "$usage" -gt "$threshold" ]; then
-  echo "Disk usage is above threshold! ($usage%)"
-  # Send alert or email
-else
-  echo "Disk usage is under control ($usage%)"
-fi
-```
+df -H | grep -vE '^Filesystem|tmpfs' | while read line; do
+  usage=$(echo $line | awk '{ print $5 }' | sed 's/%//g')
+  mountpoint=$(echo $line | awk '{ print $6 }')
 
-✅ Use in production for `/`, `/var`, or `/data`.
-
----
-
-### 🧪 **3. Backup Script (25 mins)**
-
-```bash
-#!/bin/bash
-src="/var/www/html"
-dest="/backup/html_$(date +%F).tar.gz"
-
-tar -czf $dest $src
-
-if [ $? -eq 0 ]; then
-  echo "Backup successful: $dest"
-else
-  echo "Backup failed!"
-fi
-```
-
-💡 Real world usage: Run via cron every night on production web servers.
-
----
-
-### 🔍 **4. Log Analysis Script (25 mins)**
-
-```bash
-#!/bin/bash
-log="/var/log/syslog"
-grep -i "error" $log | tail -n 10
-```
-
-📈 **Enhanced Version**: Count occurrences of different error types
-
-```bash
-awk '/ERROR/ { print $NF }' /var/log/app.log | sort | uniq -c | sort -nr
-```
-
-💡 SRE use case: Create lightweight alerting for log patterns before integrating with ELK or SumoLogic.
-
----
-
-### 🔧 **5. Script with Functions (20 mins)**
-
-```bash
-#!/bin/bash
-
-check_service() {
-  systemctl is-active --quiet $1 && echo "$1 is running" || echo "$1 is NOT running"
-}
-
-for svc in nginx docker sshd; do
-  check_service $svc
+  if [ "$usage" -ge "$threshold" ]; then
+    msg="⚠️ Disk usage on $mountpoint is ${usage}%"
+    echo "$msg" | tee -a $log
+    echo "$msg" | mail -s "Disk Alert: $mountpoint" $mail_recipient
+  fi
 done
 ```
 
-📦 Makes it modular and easy to reuse.
+💡 Real-world: Run via cron every 15 mins on critical nodes.
 
 ---
 
-### 🕘 **6. Scheduling with Cron (10 mins)**
+### 🧪 **3. Dynamic Backup Script with Exclusions and Logging (25 mins)**
 
 ```bash
-crontab -e
+#!/bin/bash
+src="/var/www"
+dest="/backup/web_$(date +%F_%H-%M).tar.gz"
+exclude_list="/opt/scripts/backup_exclude.txt"
+log="/var/log/backup.log"
 
-# Run backup at 2am daily
-0 2 * * * /opt/scripts/backup.sh
+echo "Starting backup: $(date)" >> $log
+
+tar --exclude-from=$exclude_list -czf $dest $src 2>>$log
+
+if [ $? -eq 0 ]; then
+  echo "✅ Backup successful: $dest" >> $log
+else
+  echo "❌ Backup failed: $(date)" >> $log
+fi
+```
+
+📄 `backup_exclude.txt` example:
+
+```
+/var/www/tmp
+/var/www/cache
 ```
 
 ---
 
-### 🧠 **7. Scripting Best Practices (10 mins)**
+### 🔍 **4. Intelligent Log Analysis Script with Report (30 mins)**
 
-* Use `#!/bin/bash` explicitly
-* Always handle exit codes (`$?`)
-* Use logging (`logger`, `echo`)
-* Avoid hardcoding paths
+```bash
+#!/bin/bash
+logfile="/var/log/syslog"
+report="/tmp/error_report_$(date +%F).txt"
+
+echo "Error Report - $(date)" > $report
+echo "------------------------" >> $report
+
+grep -iE "error|fail|critical" $logfile | sort | uniq -c | sort -nr >> $report
+
+# Optional: Send to email or Slack webhook
+echo "Error report saved to $report"
+```
+
+💡 Use Case: Daily error summary for incidents.
 
 ---
 
-### 📘 **Day 2 Homework**
+### 🔧 **5. Retry & Auto-Restart Services with Status Report (30 mins)**
 
-* Script to check if given IP is reachable (ping check)
-* Script to rotate logs (move to archive if size > 10MB)
-* Script to check and restart failed services (use `systemctl`)
+```bash
+#!/bin/bash
+services=("nginx" "docker" "sshd")
+report="/tmp/service_check_$(date +%F_%H-%M).log"
+
+echo "Service Health Check - $(date)" > $report
+
+for svc in "${services[@]}"; do
+  systemctl is-active --quiet $svc
+  if [ $? -ne 0 ]; then
+    echo "❌ $svc is down. Attempting restart..." | tee -a $report
+    systemctl restart $svc
+    sleep 3
+    systemctl is-active --quiet $svc && echo "✅ $svc restarted successfully" >> $report || echo "❌ $svc restart failed!" >> $report
+  else
+    echo "✅ $svc is running" >> $report
+  fi
+done
+```
+
+📬 Schedule via cron + mail the log to SRE mailbox.
 
 ---
+
+### 🔁 **6. Cron with Logging and History (10 mins)**
+
+```bash
+# crontab -e
+
+*/10 * * * * /opt/scripts/check_services.sh >> /var/log/check_services.log 2>&1
+```
+
+💡 Tip: Rotate logs with `logrotate.d` or archive weekly via another shell script.
+
+---
+
+### 🔐 **7. Secure and Reusable Best Practices (10 mins)**
+
+* Use full paths (`/usr/bin/grep`)
+* Check return codes (`$?`) after critical steps
+* Use `set -euo pipefail` for safety
+* Redirect errors to a log file (`2>>error.log`)
+* Use functions for modular scripts
+* Document parameters and usage inside the script
+
+---
+
+### 🧠 **Homework Assignments (Advanced)**
+
+1. **Failover Script**: Check service health, if down, update route/DNS or fallback IP
+2. **Auto-rotate Logs**: Move logs >10MB to archive folder with timestamp
+3. **Uptime Summary Script**: Generate a report of system uptime across 3 machines via SSH loop
+4. **Monitor Public Website**: Script that pings or curl-checks a public endpoint, retries 3x before alert
+5. **Dynamic User Creation**: Create users from CSV file with random passwords and assign to groups
