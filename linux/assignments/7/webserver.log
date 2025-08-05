@@ -1,0 +1,6 @@
+Jul 29 10:01:23 webserver01 nginx: 200 GET /index.html 192.168.1.10
+Jul 29 10:01:24 webserver01 nginx: 500 GET /api/data 192.168.1.11
+Jul 29 10:01:25 webserver01 nginx: 403 GET /admin 192.168.1.12
+Jul 29 10:01:26 webserver01 nginx: 200 POST /login 192.168.1.13
+Jul 29 10:01:27 webserver01 nginx: 404 GET /unknown 192.168.1.14
+Jul 29 10:01:28 webserver01 nginx: 502 GET /api/payment 192.168.1.15
