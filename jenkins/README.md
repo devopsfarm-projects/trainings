@@ -28,14 +28,15 @@ echo "hello world"
 
 Created a job with parameters(string boolean and Choices)
 
-Create a job that checkout code, build and tests. Post build, It publishes the tests reports in the build
+Freestyle job - Create a job that checkout code, build and tests. Post build, It publishes the tests reports in the build
 
-Create a declarative pipeline job from https://github.com/DevopsFarmer/java-sample-app.git that will do
-Four stages
-  checkout
-  build
-  test
-  publish
-
-Add parameters to enable/disable test stage
+Pipeline job -
+   Create a declarative pipeline job from https://github.com/DevopsFarmer/java-sample-app.git that will do
+   Four stages
+     checkout
+     build
+     test
+     publish
+   
+   Add parameters to enable/disable test stage
 
