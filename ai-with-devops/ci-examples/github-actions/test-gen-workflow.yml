@@ -1,0 +1,32 @@
+name: Suggest tests on PR (example)
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  suggest-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: Dump changed files (demo)
+        run: |
+          echo "In a real workflow you'd fetch the PR diff via the GitHub API."
+          git --no-pager diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} > changed_files.txt || true
+          cat changed_files.txt || true
+      - name: Generate suggested tests (mock)
+        run: |
+          # For demo, pass a sample or diff file to the suggester script
+          python labs/04-ai-testing/starter/pr_suggester.py changed_files.txt > suggested_comment.txt || true
+      - name: Comment on PR (demo action)
+        uses: ./ci-examples/github-actions/test-gen-action/action
+        with:
+          comment-file: suggested_comment.txt
