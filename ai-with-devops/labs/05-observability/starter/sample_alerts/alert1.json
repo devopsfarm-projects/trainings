@@ -1,0 +1,16 @@
+{
+  "alert": {
+    "title": "High error rate on /api/payments",
+    "severity": "critical",
+    "timestamp": "2025-10-28T09:12:00Z",
+    "metrics": {
+      "error_rate": 0.23,
+      "threshold": 0.05
+    },
+    "recent_changes": "Deployed service/payment-service v1.3.2 10 minutes ago",
+    "logs": [
+      "ERROR: connection refused to db-host:5432",
+      "Timeout while calling payment-gateway"
+    ]
+  }
+}
